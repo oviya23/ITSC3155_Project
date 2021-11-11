@@ -2,8 +2,17 @@
 import os                 # os is used to get environment variables IP & PORT
 from flask import Flask   # Flask is the web app that we will customize
 from flask import render_template
+from database import db
 
 app = Flask(__name__)     # create an app
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_qa_app.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
+#  Bind SQLAlchemy db object to this Flask app
+db.init_app(app)
+# Setup models
+with app.app_context():
+    db.create_all()   # run under the app context
+
 
 @app.route('/')
 @app.route('/index')
