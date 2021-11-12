@@ -20,6 +20,14 @@ with app.app_context():
 def index():
     return render_template('index.html')
 
+@app.route('/home/question/edit/delete/<question_id>', methods=['POST'])
+def delete_note(question_id):
+    # retrieve question from database
+    my_question = db.session.query(Question).filter_by(id=question_id).one()
+    db.session.delete(my_question)
+    db.session.commit()
+
+    return redirect(url_for('home'))
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 
