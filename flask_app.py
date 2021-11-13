@@ -22,7 +22,7 @@ def index():
     # retrieve questions from database
     my_questions = db.session.query(Question).all()
 
-    return render_template('home.html', questions=my_questions)
+    return render_template('home.html', post=my_questions)
 
 
 @app.route('/home/<question_id>')
