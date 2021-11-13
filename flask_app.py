@@ -52,6 +52,37 @@ def new_post():
         return render_template('new_post.html')
 
 
+@app.route('/home/question/edit/<question_id>', methods=['GET', 'POST'])
+def edit_post(question_id):
+    if request.method == 'POST':
+        # get title data
+        title = request.form['title']
+
+        # get post text
+        text = request.form['postText']
+        post = db.session.query(Question).filter_by(id=question_id).one()
+
+        # update question title and text
+        post.title = title
+        post.text = text
+
+        # update question in database
+        db.session.add(post)
+        db.session.commit()
+
+        return redirect(url_for('get_question'))
+    else:
+        # GET request - show new question form to edit the question
+        # retrieve user from database
+        # Fix this line -----
+        # a_user = db.session.query(Account).filter_by(username="test").one()
+
+        # retrieve question from database
+        my_question = db.session.query(Question).filter_by(id=question_id).one()
+
+        return render_template('edit.html', post=my_question)
+
+
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
 # To see the web page in your web browser, go to the url,
 #   http://127.0.0.1:5000
