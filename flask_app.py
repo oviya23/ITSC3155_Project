@@ -18,12 +18,12 @@ with app.app_context():
 
 
 @app.route('/')
-@app.route('/index')
+@app.route('/home')
 def index():
     return render_template('home.html')
 
 
-@app.route('/index/new', methods=['GET', 'POST'])
+@app.route('/home/new', methods=['GET', 'POST'])
 def new_post():
     if request.method == 'POST':
         title = request.form['title']
@@ -42,7 +42,7 @@ def new_post():
         return render_template('new_post.html')
 
 
-app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
+app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
 
 # To see the web page in your web browser, go to the url,
 #   http://127.0.0.1:5000
