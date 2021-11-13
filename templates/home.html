@@ -11,6 +11,12 @@
     <body>
         <nav><a href="{{ url_for('new_post') }}">Make a post</a></nav>
         <h1>Welcome to the 49er Q&A App!</h1>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+            </tr>
+
         {% for post in home %}
         <tr>
         <td><a href="{{ url_for('get_question', question_id=post.question_id }}">{{ post.title }}</a></td>
@@ -22,5 +28,7 @@
             </form>
         </td>
         </tr>
+        </table>
+
     </body>
 </html>
