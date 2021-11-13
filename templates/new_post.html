@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="UNCC Notes App">
+        <title>UNCC Q&A App - New Post</title>
+        <!-- styles -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+    <body>
+       <nav>
+           <!--  add navigation links -->
+
+       </nav>
+
+        <h1>New Post</h1>
+        <form action="new" method="post">
+           <p><label>Title </label></p><p>  <input type="text" name="title"/></p>
+            <p><label>Post </label></p><p><textarea name="postText"  rows="6" cols="0" >Type your post here ...</textarea></p>
+            <p><input type="submit" value="Create Post"/></p>
+        </form>
+    </body>
+</html>
