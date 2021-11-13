@@ -18,7 +18,11 @@ with app.app_context():
 @app.route('/')
 @app.route('/home')
 def index():
-    return render_template('home.html')
+    # retrieve user from database
+    # retrieve questions from database
+    my_questions = db.session.query(Question).all()
+
+    return render_template('home.html', questions=my_questions)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
