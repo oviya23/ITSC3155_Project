@@ -5,20 +5,20 @@ class Question(db.Model):
     question_id = db.Column("question_id", db.Integer, primary_key=True)
     title = db.Column("title", db.String(200))
     text = db.Column("text", db.String(600))
-    posted_date = db.Column("posted_date", db.Numeric)
-    num_likes = db.Column("title", db.Integer)
-    image = db.Column("image", db.Blob)
-    category = db.Column("category", db.Text)
-    view_count = db.Column("view_count", db.Integer)
+    posted_date = db.Column("posted_date", db.String(50))
+    # num_likes = db.Column("title", db.Integer)
+    # image = db.Column("image", db.Text)
+    # category = db.Column("category", db.Text)
+    # view_count = db.Column("view_count", db.Integer)
 
-    def __init__(self, title, text, posted_date, num_likes, image, category, view_count):
+    def __init__(self, title, text, posted_date):
         self.title = title
         self.text = text
         self.posted_date = posted_date
-        self.num_likes = num_likes
-        self.image = image
-        self.category = category
-        self.view_count = view_count
+        # self.num_likes = num_likes
+        # self.image = image
+        # self.category = category
+        # self.view_count = view_count
 
 
 # class Login(db.Model):
@@ -55,6 +55,3 @@ class Question(db.Model):
 #
 #     def __init__(self, question_id):
 #         self.question_id = question_id
-
-
-
