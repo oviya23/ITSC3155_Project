@@ -18,20 +18,14 @@ with app.app_context():
 @app.route('/')
 @app.route('/home')
 def index():
-    return render_template('index.html')
-
-
-app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
-
-@app.route('/home')
-def get_question():
     # retrieve user from database
     # retrieve questions from database
     my_questions = db.session.query(Question).all()
 
-    return render_template('home.html', questions = my_questions)
+    return render_template('home.html', questions=my_questions)
 
-app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
+
+app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)),debug=True)
 # To see the web page in your web browser, go to the url,
 #   http://127.0.0.1:5000
 
