@@ -16,9 +16,9 @@ with app.app_context():
 
 
 @app.route('/')
-@app.route('/index')
+@app.route('/home')
 def index():
-    return render_template('index.html')
+    return render_template('home.html')
 
 @app.route('/home/question/edit/delete/<question_id>', methods=['POST'])
 def delete_note(question_id):
@@ -27,7 +27,7 @@ def delete_note(question_id):
     db.session.delete(my_question)
     db.session.commit()
 
-    return redirect(url_for('home'))
+    return redirect(url_for('get_question'))
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 
