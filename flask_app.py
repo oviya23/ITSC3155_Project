@@ -25,6 +25,12 @@ def index():
     return render_template('home.html', post=my_questions)
 
 
+@app.route('/home/<question_id>')
+def get_question(question_id):
+    my_question = db.session.query(Question).filter_by(id=question_id).one()
+    return render_template('question.html', post=my_question)
+
+
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
 # To see the web page in your web browser, go to the url,
 #   http://127.0.0.1:5000
