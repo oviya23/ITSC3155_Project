@@ -13,6 +13,13 @@ def index():
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 
+@app.route('/Home')
+def get_questions():
+    # retrieve user from database
+    # retrieve questions from database
+    questions = db.session.query(Question).all()
+
+    return render_template('question.html', questions = my_questions)
 # To see the web page in your web browser, go to the url,
 #   http://127.0.0.1:5000
 
