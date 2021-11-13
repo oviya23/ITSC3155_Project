@@ -22,7 +22,7 @@ def index():
     # retrieve questions from database
     my_questions = db.session.query(Question).all()
 
-    return render_template('home.html', questions=my_questions)
+    return render_template('home.html', post=my_questions)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
