@@ -9,7 +9,8 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <body>
-        <nav><a href="{{ url_for('new_post') }}">Make a post</a></nav>
+        <nav><a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('new_post') }}">Make a post</a></nav>
         <h1>Welcome to the 49er Q&A App!</h1>
         <table>
             <tr>
@@ -19,15 +20,16 @@
 
         {% for post in home %}
         <tr>
-        <td><a href="{{ url_for('get_question', question_id=post.question_id }}">{{ post.title }}</a></td>
+        <td><a href="{{ url_for('get_question', question_id=post.question_id) }}">{{ post.title }}</a></td>
         <td>{{ post.date }}</td>
-        <td><a href="{{ url_for('edit_post', question_id=post.question_id }}">Edit</a></td>
+        <td><a href="{{ url_for('edit_post', question_id=post.question_id) }}">Edit</a></td>
         <td>
-            <form action="{{ url_for('delete_post', question_id=post.question_id }}" method="post">
+            <form action="{{ url_for('delete_post', question_id=post.question_id) }}" method="post">
                 <input type="submit" value="Delete">
             </form>
         </td>
         </tr>
+        {% endfor %}
         </table>
 
     </body>
