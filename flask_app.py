@@ -29,8 +29,8 @@ def index():
 
 @app.route('/home/<question_id>')
 def get_question(question_id):
-    my_question = db.session.query(Question).filter_by(id=question_id).one()
-    return render_template('question.html', post=my_question)
+    my_question = db.session.query(Question).filter_by(question_id=question_id).one()
+    return render_template('question.html', question=my_question)
 
 
 @app.route('/home/new', methods=['GET', 'POST'])
@@ -60,7 +60,7 @@ def edit_post(question_id):
 
         # get post text
         text = request.form['postText']
-        post = db.session.query(Question).filter_by(id=question_id).one()
+        post = db.session.query(Question).filter_by(question_id=question_id).one()
 
         # update question title and text
         post.title = title
@@ -78,15 +78,15 @@ def edit_post(question_id):
         # a_user = db.session.query(Account).filter_by(username="test").one()
 
         # retrieve question from database
-        my_question = db.session.query(Question).filter_by(id=question_id).one()
+        my_question = db.session.query(Question).filter_by(question_id=question_id).one()
 
-        return render_template('edit.html', post=my_question)
+        return render_template('edit.html', question=my_question)
 
 
-@app.route('/home/question/edit/delete/<question_id>', methods=['POST'])
-def delete_note(question_id):
+@app.route('/home/question/delete/<question_id>', methods=['POST'])
+def delete_post(question_id):
     # retrieve question from database
-    my_question = db.session.query(Question).filter_by(id=question_id).one()
+    my_question = db.session.query(Question).filter_by(question_id=question_id).one()
     db.session.delete(my_question)
     db.session.commit()
 
