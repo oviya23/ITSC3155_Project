@@ -52,7 +52,7 @@ def new_post():
         return render_template('new_post.html')
 
 
-@app.route('/home/question/edit/<question_id>', methods=['GET', 'POST'])
+@app.route('/home/edit/<question_id>', methods=['GET', 'POST'])
 def edit_post(question_id):
     if request.method == 'POST':
         # get title data
@@ -60,17 +60,17 @@ def edit_post(question_id):
 
         # get post text
         text = request.form['postText']
-        post = db.session.query(Question).filter_by(question_id=question_id).one()
+        question = db.session.query(Question).filter_by(question_id=question_id).one()
 
         # update question title and text
-        post.title = title
-        post.text = text
+        question.title = title
+        question.text = text
 
         # update question in database
-        db.session.add(post)
+        db.session.add(question)
         db.session.commit()
 
-        return redirect(url_for('get_question'))
+        return redirect(url_for('index'))
     else:
         # GET request - show new question form to edit the question
         # retrieve user from database
@@ -80,17 +80,17 @@ def edit_post(question_id):
         # retrieve question from database
         my_question = db.session.query(Question).filter_by(question_id=question_id).one()
 
-        return render_template('edit.html', question=my_question)
+        return render_template('new_post.html', question=my_question)
 
 
-@app.route('/home/question/delete/<question_id>', methods=['POST'])
+@app.route('/home/delete/<question_id>', methods=['POST'])
 def delete_post(question_id):
     # retrieve question from database
     my_question = db.session.query(Question).filter_by(question_id=question_id).one()
     db.session.delete(my_question)
     db.session.commit()
 
-    return redirect(url_for('get_question'))
+    return redirect(url_for('index'))
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
