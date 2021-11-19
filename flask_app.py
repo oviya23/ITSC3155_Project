@@ -49,6 +49,7 @@ def get_question(question_id):
             redirect(url_for('login'))
 
 
+
 @app.route('/home/new', methods=['GET', 'POST'])
 def new_post():
     if session.get('user'):

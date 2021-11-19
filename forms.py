@@ -41,3 +41,4 @@ class ReplyForm(FlaskForm):
     reply = TextAreaField('Comment',validators=[Length(min=1)])
 
     submit = SubmitField('Reply')
+
