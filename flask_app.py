@@ -10,6 +10,7 @@ from models import User as User
 from forms import RegisterForm, ReplyForm
 import bcrypt
 from flask import session
+from models import Reply as Reply
 
 app = Flask(__name__)  # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_qa_app.db'
@@ -144,6 +145,194 @@ def register():
 
     # something went wrong - display register view
     return render_template('registration.html', form=form)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/home/<question_id>/reply', methods=['POST'])
+def new_reply(question_id):
+    if session.get('user'):
+        reply_form = ReplyForm()
+        # validate_on_submit only validates using POST
+        if reply_form.validate_on_submit():
+            # get comment data
+            reply_text = request.form['reply']
+            new_record = Reply(reply_text, int(question_id), session['user_id'])
+            db.session.add(new_record)
+            db.session.commit()
+
+        return redirect(url_for('get_note', question_id=question_id))
+
+    else:
+        return redirect(url_for('login'))
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
