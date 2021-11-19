@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import Length, DataRequired, EqualTo, Email
 from wtforms import ValidationError
 from models import User
@@ -33,3 +33,11 @@ class RegisterForm(FlaskForm):
         if db.session.query(User).filter_by(email=field.data).count() != 0:
             raise ValidationError('Username already in use.')
 
+
+class ReplyForm(FlaskForm):
+    class Meta:
+        csrf = False
+
+    reply = TextAreaField('Comment',validators=[Length(min=1)])
+
+    submit = SubmitField('Reply')

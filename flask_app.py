@@ -37,16 +37,16 @@ def index():
 
 @app.route('/home/<question_id>')
 def get_question(question_id):
-    if session.get('user'):
+        if session.get('user'):
 
-        my_question = db.session.query(Question).filter_by(question_id=question_id, user_id=session['user_id']).one()
+            my_question = db.session.query(Question).filter_by(question_id=question_id, user_id=session['user_id']).one()
 
-        # create a reply form object
-        form = ReplyForm()
+            # create a reply form object
+            form = ReplyForm()
 
-        return render_template('question.html', question=my_question, user=session['user'], form=form)
-    else:
-        redirect(url_for('login'))
+            return render_template('question.html', question=my_question, user=session['user'], form=form)
+        else:
+            redirect(url_for('login'))
 
 
 @app.route('/home/new', methods=['GET', 'POST'])
