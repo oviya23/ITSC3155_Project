@@ -8,6 +8,7 @@ from database import db
 from models import Question as Question
 from models import User as User
 from forms import RegisterForm
+from forms import LoginForm
 import bcrypt
 from flask import session
 
@@ -32,73 +33,87 @@ def index():
 
         return render_template('home.html', post=my_questions, user=session['user'])
     else:
-        redirect(url_for('login'))
+        return redirect(url_for('login'))
 
 
 @app.route('/home/<question_id>')
 def get_question(question_id):
-    my_question = db.session.query(Question).filter_by(question_id=question_id).one()
-    return render_template('question.html', question=my_question)
+    if session.get('user'):
+        my_question = db.session.query(Question).filter_by(question_id=question_id).one()
+
+        return render_template('question.html', question=my_question)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/home/new', methods=['GET', 'POST'])
 def new_post():
-    if request.method == 'POST':
-        title = request.form['title']
-        text = request.form['postText']
+    if session.get('user'):
+        if request.method == 'POST':
+            title = request.form['title']
+            text = request.form['postText']
 
-        from datetime import date
-        today = date.today()
+            from datetime import date
+            today = date.today()
 
-        today = today.strftime("%m-%d-%Y")
+            today = today.strftime("%m-%d-%Y")
 
-        new_record = Question(title, text, today, session['user_id'])
-        db.session.add(new_record)
-        db.session.commit()
-        return redirect(url_for('index'))
+            new_record = Question(title, text, today, session['user_id'])
+            db.session.add(new_record)
+            db.session.commit()
+            return redirect(url_for('index'))
+        else:
+            return render_template('new_post.html', user=session['user'])
     else:
-        return render_template('new_post.html')
+        return redirect(url_for('login'))
 
 
 @app.route('/home/edit/<question_id>', methods=['GET', 'POST'])
 def edit_post(question_id):
-    if request.method == 'POST':
-        # get title data
-        title = request.form['title']
+    if session.get('user'):
+        if request.method == 'POST':
+            # get title data
+            title = request.form['title']
 
-        # get post text
-        text = request.form['postText']
-        question = db.session.query(Question).filter_by(question_id=question_id).one()
+            # get post text
+            text = request.form['postText']
+            question = db.session.query(Question).filter_by(question_id=question_id).one()
 
-        # update question title and text
-        question.title = title
-        question.text = text
+            # update question title and text
+            question.title = title
+            question.text = text
 
-        # update question in database
-        db.session.add(question)
-        db.session.commit()
+            # update question in database
+            db.session.add(question)
+            db.session.commit()
 
-        return redirect(url_for('index'))
+            return redirect(url_for('index'))
+        else:
+            # GET request - show new question form to edit the question
+            # retrieve user from database
+            # Fix this line -----
+            # a_user = db.session.query(Account).filter_by(username="test").one()
+
+            # retrieve question from database
+            my_question = db.session.query(Question).filter_by(question_id=question_id).one()
+
+            return render_template('new_post.html', question=my_question, user=session['user'])
     else:
-        # GET request - show new question form to edit the question
-        # retrieve user from database
-        # Fix this line -----
-        # a_user = db.session.query(Account).filter_by(username="test").one()
-
-        # retrieve question from database
-        my_question = db.session.query(Question).filter_by(question_id=question_id).one()
-
-        return render_template('new_post.html', question=my_question)
+        return redirect(url_for('login'))
 
 
 @app.route('/home/delete/<question_id>', methods=['POST'])
 def delete_post(question_id):
-    # retrieve question from database
-    my_question = db.session.query(Question).filter_by(question_id=question_id).one()
-    db.session.delete(my_question)
-    db.session.commit()
+    if session.get('user'):
+        # retrieve question from database
+        my_question = db.session.query(Question).filter_by(question_id=question_id).one()
 
-    return redirect(url_for('index'))
+        db.session.delete(my_question)
+        db.session.commit()
+
+        return redirect(url_for('index'))
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -125,6 +140,30 @@ def register():
 
     # something went wrong - display register view
     return render_template('registration.html', form=form)
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    login_form = LoginForm()
+    # validate_on_submit only validates using POST
+    if login_form.validate_on_submit():
+        # we know user exists. We can use one()
+        the_user = db.session.query(User).filter_by(email=request.form['email']).one()
+        # user exists check password entered matches stored password
+        if bcrypt.checkpw(request.form['password'].encode('utf-8'), the_user.password):
+            # password match add user info to session
+            session['user'] = the_user.first_name
+            session['user_id'] = the_user.user_id
+            # render view
+            return redirect(url_for('index'))
+
+        # password check failed
+        # set error message to alert user
+        login_form.password.errors = ["Incorrect username or password."]
+        return render_template("login.html", form=login_form)
+    else:
+        # form did not validate or GET request
+        return render_template("login.html", form=login_form)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
