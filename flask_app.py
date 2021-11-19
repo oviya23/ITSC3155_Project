@@ -38,6 +38,7 @@ def index():
 @app.route('/home/<question_id>')
 def get_question(question_id):
     if session.get('user'):
+
         my_question = db.session.query(Question).filter_by(question_id=question_id, user_id=session['user_id']).one()
 
         # create a reply form object
@@ -45,7 +46,7 @@ def get_question(question_id):
 
         return render_template('question.html', question=my_question, user=session['user'], form=form)
     else:
-        return redirect(url_for('login'))
+        redirect(url_for('login'))
 
 
 @app.route('/home/new', methods=['GET', 'POST'])
