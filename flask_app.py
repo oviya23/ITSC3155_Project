@@ -8,6 +8,7 @@ from database import db
 from models import Question as Question
 from models import User as User
 from forms import RegisterForm, ReplyForm
+from forms import LoginForm
 import bcrypt
 from flask import session
 from models import Reply as Reply
@@ -38,17 +39,16 @@ def index():
 
 @app.route('/home/<question_id>')
 def get_question(question_id):
-        if session.get('user'):
+    if session.get('user'):
 
-            my_question = db.session.query(Question).filter_by(question_id=question_id, user_id=session['user_id']).one()
+        my_question = db.session.query(Question).filter_by(question_id=question_id).one()
 
-            # create a reply form object
-            form = ReplyForm()
+        # create a reply form object
+        form = ReplyForm()
 
-            return render_template('question.html', question=my_question, user=session['user'], form=form)
-        else:
-            redirect(url_for('login'))
-
+        return render_template('question.html', question=my_question, form=form)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/home/new', methods=['GET', 'POST'])
@@ -147,174 +147,37 @@ def register():
     return render_template('registration.html', form=form)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    login_form = LoginForm()
+    # validate_on_submit only validates using POST
+    if login_form.validate_on_submit():
+        # we know user exists. We can use one()
+        the_user = db.session.query(User).filter_by(email=request.form['email']).one()
+        # user exists check password entered matches stored password
+        if bcrypt.checkpw(request.form['password'].encode('utf-8'), the_user.password):
+            # password match add user info to session
+            session['user'] = the_user.first_name
+            session['user_id'] = the_user.user_id
+            # render view
+            return redirect(url_for('index'))
+
+        # password check failed
+        # set error message to alert user
+        login_form.password.errors = ["Incorrect username or password."]
+        return render_template("login.html", form=login_form)
+    else:
+        # form did not validate or GET request
+        return render_template("login.html", form=login_form)
+
+
+@app.route('/logout')
+def logout():
+    # check if a user is saved in session
+    if session.get('user'):
+        session.clear()
+
+    return redirect(url_for('index'))
 
 
 @app.route('/home/<question_id>/reply', methods=['POST'])
@@ -329,7 +192,7 @@ def new_reply(question_id):
             db.session.add(new_record)
             db.session.commit()
 
-        return redirect(url_for('get_note', question_id=question_id))
+        return redirect(url_for('get_question', question_id=question_id))
 
     else:
         return redirect(url_for('login'))

@@ -36,12 +36,6 @@ class Question(db.Model):
 #
 #
 
-
-
-
-
-
-
 class User(db.Model):
     user_id = db.Column("user_id", db.Integer, primary_key=True)
     #     account_type = db.Column("account_type", db.String(50))
@@ -51,12 +45,11 @@ class User(db.Model):
     password = db.Column(db.String(50), nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
     replies = db.relationship("Reply", backref="user", lazy=True)
-
     #     questions = db.relationship("Question", backref="user", lazy=True)
     #     phone_number = db.Column("phone_number", db.Integer)
     #     username = db.Column("username", db.String(50))
     #     profile_picture = db.Column("profile_picture", db.Blob)
-    #
+
     def __init__(self, first_name, last_name, email, password):
         #       self.account_type = account_type
         self.user_id = self.user_id
@@ -68,27 +61,10 @@ class User(db.Model):
 #         self.phone_number = phone_number
 #         self.username = username
 #         self.profile_picture = profile_picture
-#
-#
-# class canPost(db.Model):
-#     account_id = db.Column("account_id", db.Integer, primary_key=True)
-#     question_id = db.Column("question_id", db.Integer)
-#
-#     def __init__(self, question_id):
-#         self.question_id = question_id
-
-
-
-
-
-
-
-
-
 
 
 class Reply(db.Model):
-    #question_id = db.Column(db.Integer, primary_key=True)
+    reply_id = db.Column(db.Integer, primary_key=True)
     date_posted = db.Column(db.DateTime, nullable=False)
     content = db.Column(db.VARCHAR, nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey("question.question_id"), nullable=False)
@@ -99,3 +75,12 @@ class Reply(db.Model):
         self.content = content
         self.question_id = question_id
         self.user_id = user_id
+
+#
+#
+# class canPost(db.Model):
+#     account_id = db.Column("account_id", db.Integer, primary_key=True)
+#     question_id = db.Column("question_id", db.Integer)
+#
+#     def __init__(self, question_id):
+#         self.question_id = question_id
