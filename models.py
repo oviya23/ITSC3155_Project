@@ -10,21 +10,20 @@ class Question(db.Model):
     # creating a foreign key: referencing the id variable in the User class, so that is why it is lowercase u
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False)
     replies = db.relationship("Reply", backref="question", cascade="all, delete-orphan", lazy=True)
-
+    view_count = db.Column("view_count", db.Integer, default=0)
     # num_likes = db.Column("title", db.Integer)
     # image = db.Column("image", db.Text)
     # category = db.Column("category", db.Text)
-    # view_count = db.Column("view_count", db.Integer)
 
-    def __init__(self, title, text, posted_date, user_id):
+    def __init__(self, title, text, posted_date, user_id, view_count):
         self.title = title
         self.text = text
         self.posted_date = posted_date
         self.user_id = user_id
+        self.view_count = view_count
         # self.num_likes = num_likes
         # self.image = image
         # self.category = category
-        # self.view_count = view_count
 
 
 # class Login(db.Model):
