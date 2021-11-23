@@ -42,21 +42,23 @@ class User(db.Model):
     first_name = db.Column("first_name", db.String(50))
     email = db.Column("email", db.String(50))
     password = db.Column(db.String(50), nullable=False)
-    registered_on = db.Column(db.DateTime, nullable=False)
+    registered_on = db.Column("posted_date", db.String(50))
     replies = db.relationship("Reply", backref="user", lazy=True)
+    num_of_posts = db.Column("num_of_posts", db.Integer, default=0)
     #     questions = db.relationship("Question", backref="user", lazy=True)
     #     phone_number = db.Column("phone_number", db.Integer)
     #     username = db.Column("username", db.String(50))
     #     profile_picture = db.Column("profile_picture", db.Blob)
 
-    def __init__(self, first_name, last_name, email, password):
+    def __init__(self, first_name, last_name, email, password, registered_on, num_of_posts):
         #       self.account_type = account_type
         self.user_id = self.user_id
         self.last_name = last_name
         self.first_name = first_name
         self.email = email
         self.password = password
-        self.registered_on = datetime.date.today()
+        self.registered_on = registered_on
+        self.num_of_posts = num_of_posts
 #         self.phone_number = phone_number
 #         self.username = username
 #         self.profile_picture = profile_picture

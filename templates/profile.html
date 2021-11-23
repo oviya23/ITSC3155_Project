@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="UNCC Q&A App">
+        <title>My Profile</title>
+        <!-- styles -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+    <body>
+
+    <nav> <a href="{{ url_for('index') }}"> Home </a> || <a href="{{ url_for('logout') }}">Logout</a></nav>
+
+    <h1>{{ user.first_name }}'s Profile</h1>
+
+    <table>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>A Member Since:</th>
+                <th>Number of Questions Posted:</th>
+            </tr>
+            <tr>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.registered_on }}</td>
+                <td>{{ user.num_of_posts }}</td>
+            </tr>
+        </table>
+    </body>
+</html>

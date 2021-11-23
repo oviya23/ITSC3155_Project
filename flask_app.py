@@ -37,6 +37,17 @@ def index():
         return redirect(url_for('login'))
 
 
+@app.route('/home/profile')
+def get_profile():
+    # retrieve user from database
+    if session.get('user'):
+        my_user = db.session.query(User).filter_by(user_id=session['user_id']).one()
+
+        return render_template('profile.html', user=my_user)
+    else:
+        return redirect(url_for('login'))
+
+
 @app.route('/home/<question_id>')
 def get_question(question_id):
     if session.get('user'):
@@ -73,6 +84,12 @@ def new_post():
             new_record = Question(title, text, today, session['user_id'], 0)
             db.session.add(new_record)
             db.session.commit()
+
+            curr_user = db.session.query(User).filter_by(user_id=session['user_id']).one()
+            curr_user.num_of_posts += 1
+            db.session.add(curr_user)
+            db.session.commit()
+
             return redirect(url_for('index'))
         else:
             return render_template('new_post.html', user=session['user'])
@@ -80,6 +97,7 @@ def new_post():
         return redirect(url_for('login'))
 
 
+# STILL NEED TO FIGURE OUT FUNCTIONALITY SO THAT ONLY THE USER WHO CREATED POST CAN EDIT AND DELETE
 @app.route('/home/edit/<question_id>', methods=['GET', 'POST'])
 def edit_post(question_id):
     if session.get('user'):
@@ -114,6 +132,7 @@ def edit_post(question_id):
         return redirect(url_for('login'))
 
 
+# STILL NEED TO FIGURE OUT FUNCTIONALITY SO THAT ONLY THE USER WHO CREATED POST CAN EDIT AND DELETE
 @app.route('/home/delete/<question_id>', methods=['POST'])
 def delete_post(question_id):
     if session.get('user'):
@@ -121,6 +140,11 @@ def delete_post(question_id):
         my_question = db.session.query(Question).filter_by(question_id=question_id).one()
 
         db.session.delete(my_question)
+        db.session.commit()
+
+        curr_user = db.session.query(User).filter_by(user_id=session['user_id']).one()
+        curr_user.num_of_posts -= 1
+        db.session.add(curr_user)
         db.session.commit()
 
         return redirect(url_for('index'))
@@ -139,8 +163,14 @@ def register():
         # get entered user data
         first_name = request.form['firstname']
         last_name = request.form['lastname']
+
+        from datetime import date
+        today = date.today()
+
+        today = today.strftime("%m-%d-%Y")
+
         # create user model
-        new_user = User(first_name, last_name, request.form['email'], h_password)
+        new_user = User(first_name, last_name, request.form['email'], h_password, today, 0)
         # add user to database and commit
         db.session.add(new_user)
         db.session.commit()
