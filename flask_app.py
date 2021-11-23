@@ -1,6 +1,6 @@
 # imports
 import os  # os is used to get environment variables IP & PORT
-from flask import Flask  # Flask is the web app that we will customize
+from flask import Flask, jsonify  # Flask is the web app that we will customize
 from flask import render_template
 from flask import request
 from flask import redirect, url_for
@@ -12,6 +12,7 @@ from forms import LoginForm
 import bcrypt
 from flask import session
 from models import Reply as Reply
+from multiprocessing import Value
 
 app = Flask(__name__)  # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_qa_app.db'
@@ -196,6 +197,18 @@ def new_reply(question_id):
 
     else:
         return redirect(url_for('login'))
+
+# Needs to be tested
+# Reference site: https://coderedirect.com/questions/220846/increment-counter-for-every-access-to-a-flask-view
+counter = Value('i', 0)
+@app.route('/home/<question_id')
+def view_count(question_id):
+    with counter.get_lock():
+        counter.value += 1
+        out = counter.value
+        
+    return jsonify(count=out)
+
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)
