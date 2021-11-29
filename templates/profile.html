@@ -10,9 +10,10 @@
     </head>
     <body>
 
-    <nav> <a href="{{ url_for('index') }}"> Home </a> || <a href="{{ url_for('logout') }}">Logout</a></nav>
+    <h1>ROCS Q&A</h1>
+    <nav> <a href="{{ url_for('index') }}"> Home </a> &#10023; <a href="{{ url_for('logout') }}">Logout</a></nav>
 
-    <h1>{{ user.first_name }}'s Profile</h1>
+    <h2 id="profileh2">{{ user.first_name }}'s Profile</h2>
 
     <table>
             <tr>

@@ -9,12 +9,17 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <body>
-
-    <nav> <a href="{{ url_for('index') }}"> Go back </a> || <a href="{{ url_for('get_profile') }}"> My Profile </a> || <a href="{{ url_for('logout') }}">Logout</a></nav>
+    <h1>ROCS Q&A</h1>
+    <nav>
+        <a href="{{ url_for('index') }}"> Go back </a>
+        &#10023;
+        <a href="{{ url_for('get_profile') }}"> My Profile </a>
+        &#10023;
+        <a href="{{ url_for('logout') }}">Logout</a></nav>
 
     <h1>Individual Question Page</h1>
 
-    <table>
+    <!-- <table>
             <tr>
                 <th>Title</th>
                 <th>Text</th>
@@ -25,7 +30,13 @@
                 <td>{{ question.text }}</td>
                 <td>{{ question.posted_date }}</td>
             </tr>
-        </table>
+        </table> -->
+    <div id="postInfo">
+        <h3><b>Title: {{ question.title }}</b></h3>
+        <h4> Date Posted: {{ question.posted_date }}</h4>
+        <p>Question: {{ question.text }}</p>
+    </div>
+
     {% if question.replies %}
         {% if question.replies|length > 0 %}
             <h2>Replies</h2>

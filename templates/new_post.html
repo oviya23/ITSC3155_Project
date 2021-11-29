@@ -9,9 +9,14 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <body>
+        <h1>ROCS Q&A</h1>
        <nav>
            <!--  add navigation links -->
-
+            <a href="{{ url_for('index') }}"> Go back </a>
+            &#10023;
+            <a href="{{ url_for('get_profile') }}"> My Profile </a>
+            &#10023;
+            <a href="{{ url_for('logout') }}">Logout</a></nav>
        </nav>
 
         <h1>New Post</h1>
@@ -20,11 +25,12 @@
         {% else %}
             <form action="new" method="post">
         {% endif %}
-            <p><label>Title </label></p>
+            <div id="post">
+                <h3><label>Title </label></h3>
             <p><input type="text" name="title"  value="{% if question %}{{question.title}}{% endif %}"/></p>
-            <p><label>Post </label></p>
+            <h3><label>Post </label></h3>
             <p>
-                <textarea name="postText" rows="6" cols="0">
+                <textarea name="postText" rows="6" cols="0" id="textarea">
                     {% if question %}
                         {{question.text}}
                     {% else %}
@@ -39,6 +45,8 @@
                     <input type="submit" value="Create Post"/>
                 {% endif %}
             </p>
+            </div>
+
             </form>
     </body>
 </html>

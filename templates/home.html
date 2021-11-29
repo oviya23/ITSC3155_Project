@@ -9,9 +9,10 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     </head>
     <body>
+        <h1>ROCS Q&A</h1>
         {% if user %}
                 <nav>
-                    <a href="{{ url_for('get_profile') }}">My Profile</a> || <a href="{{ url_for('logout') }}">Logout</a>
+                    <a href="{{ url_for('get_profile') }}">My Profile</a> &#10023; <a href="{{ url_for('logout') }}">Logout</a>
                 </nav>
         {% else %}
                 <nav>
@@ -19,8 +20,8 @@
                     <a href="{{ url_for('register') }}">Register</a>
                 </nav>
         {% endif %}
-        <nav><a href="{{ url_for('new_post') }}">Make a post</a></nav>
-        <h1>Welcome {{user}} to the 49er Q&A App!</h1>
+        <h2 id="welcome">Welcome {{user}} to the ROCS Q&A App!</h2>
+        <a href="{{ url_for('new_post') }}">Make a Post</a>
         <table>
             <tr>
                 <th>Title</th>
