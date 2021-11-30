@@ -32,7 +32,7 @@ def index():
     if session.get('user'):
         my_questions = db.session.query(Question).all()
 
-        return render_template('home.html', post=my_questions, user=session['user'])
+        return render_template('home.html', post=my_questions, user=session['user'], userID=session['user_id'])
     else:
         return redirect(url_for('login'))
 
@@ -97,7 +97,6 @@ def new_post():
         return redirect(url_for('login'))
 
 
-# STILL NEED TO FIGURE OUT FUNCTIONALITY SO THAT ONLY THE USER WHO CREATED POST CAN EDIT AND DELETE
 @app.route('/home/edit/<question_id>', methods=['GET', 'POST'])
 def edit_post(question_id):
     if session.get('user'):
@@ -132,7 +131,6 @@ def edit_post(question_id):
         return redirect(url_for('login'))
 
 
-# STILL NEED TO FIGURE OUT FUNCTIONALITY SO THAT ONLY THE USER WHO CREATED POST CAN EDIT AND DELETE
 @app.route('/home/delete/<question_id>', methods=['POST'])
 def delete_post(question_id):
     if session.get('user'):
