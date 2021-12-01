@@ -57,6 +57,13 @@ def get_question(question_id):
         # increment view count everytime question page is accessed
         my_question.view_count += 1
 
+        #posts = db.question.select().where(db.question.question_id == question_id)
+        #if my_question.view_count() == 0:
+        #    print("Error")
+        #post = db.question.select().where(db.question.question_id == question_id).get()
+        #query = my_question.update(num_likes=(my_question.num_likes + 1))
+        #query.execute()
+
         # update question in database
         db.session.add(my_question)
         db.session.commit()
@@ -81,7 +88,7 @@ def new_post():
 
             today = today.strftime("%m-%d-%Y")
 
-            new_record = Question(title, text, today, session['user_id'], 0)
+            new_record = Question(title, text, today, session['user_id'], 0, 0)
             db.session.add(new_record)
             db.session.commit()
 

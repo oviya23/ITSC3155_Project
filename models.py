@@ -11,17 +11,17 @@ class Question(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False)
     replies = db.relationship("Reply", backref="question", cascade="all, delete-orphan", lazy=True)
     view_count = db.Column("view_count", db.Integer, default=0)
-    # num_likes = db.Column("title", db.Integer)
+    num_likes = db.Column("Upvotes", db.Integer, db.ForeignKey("user.user_id"), db.ForeignKey("question.question_id"), default=0)
     # image = db.Column("image", db.Text)
     # category = db.Column("category", db.Text)
 
-    def __init__(self, title, text, posted_date, user_id, view_count):
+    def __init__(self, title, text, posted_date, user_id, view_count, num_likes):
         self.title = title
         self.text = text
         self.posted_date = posted_date
         self.user_id = user_id
         self.view_count = view_count
-        # self.num_likes = num_likes
+        self.num_likes = num_likes
         # self.image = image
         # self.category = category
 
@@ -85,3 +85,4 @@ class Reply(db.Model):
 #
 #     def __init__(self, question_id):
 #         self.question_id = question_id
+

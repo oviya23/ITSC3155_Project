@@ -37,6 +37,11 @@
         <p>Question: {{ question.text }}</p>
     </div>
 
+     <div class="voting_bar">
+        <a href="/home/{{ question.question_id }}"><img src="/static/img/upvote.png"></a>
+        <p>{{ question.num_likes }}</p>
+      </div>
+
     {% if question.replies %}
         {% if question.replies|length > 0 %}
             <h2>Replies</h2>
