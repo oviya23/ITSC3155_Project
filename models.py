@@ -1,7 +1,6 @@
 from database import db
 import datetime
 
-
 class Question(db.Model):
     question_id = db.Column("question_id", db.Integer, primary_key=True)
     title = db.Column("title", db.String(200))
@@ -11,17 +10,17 @@ class Question(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False)
     replies = db.relationship("Reply", backref="question", cascade="all, delete-orphan", lazy=True)
     view_count = db.Column("view_count", db.Integer, default=0)
-    # num_likes = db.Column("title", db.Integer)
+    num_likes = db.Column("Upvotes", db.Integer, db.ForeignKey("user.user_id"), db.ForeignKey("question.question_id"), default=0)
     # image = db.Column("image", db.Text)
     # category = db.Column("category", db.Text)
 
-    def __init__(self, title, text, posted_date, user_id, view_count):
+    def __init__(self, title, text, posted_date, user_id, view_count, num_likes):
         self.title = title
         self.text = text
         self.posted_date = posted_date
         self.user_id = user_id
         self.view_count = view_count
-        # self.num_likes = num_likes
+        self.num_likes = num_likes
         # self.image = image
         # self.category = category
 
@@ -49,6 +48,20 @@ class User(db.Model):
     #     phone_number = db.Column("phone_number", db.Integer)
     #     username = db.Column("username", db.String(50))
     #     profile_picture = db.Column("profile_picture", db.Blob)
+    liked = db.relationship(
+        'PostLike',
+        foreign_keys='PostLike.user_id',
+        backref='user', lazy='dynamic')
+
+    def like_post(self, question):
+        if not self.has_liked(question):
+            like = PostLike(user_id=self.id, question_id=question.question_id)
+            db.session.add(like)
+
+    def has_liked_post(self, question):
+        return PostLike.query.filter(PostLike.user_id == self.user_id, PostLike.question_id == question.question_id).count() > 0
+
+
 
     def __init__(self, first_name, last_name, email, password, registered_on, num_of_posts):
         #       self.account_type = account_type
@@ -85,3 +98,12 @@ class Reply(db.Model):
 #
 #     def __init__(self, question_id):
 #         self.question_id = question_id
+
+class PostLike(db.Model):
+    __tablename__ = 'post_like'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    question_id = db.Column(db.Integer, db.ForeignKey('question.question_id'))
+
+
+
