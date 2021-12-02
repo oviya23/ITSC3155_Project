@@ -48,7 +48,7 @@ def get_profile():
         return redirect(url_for('login'))
 
 
-@app.route('/home/<question_id>')
+@app.route('/home/<question_id>', methods=['GET', 'POST'])
 def get_question(question_id):
     if session.get('user'):
 
@@ -57,12 +57,12 @@ def get_question(question_id):
         # increment view count everytime question page is accessed
         my_question.view_count += 1
 
-        #posts = db.question.select().where(db.question.question_id == question_id)
-        #if my_question.view_count() == 0:
-        #    print("Error")
-        #post = db.question.select().where(db.question.question_id == question_id).get()
-        #query = my_question.update(num_likes=(my_question.num_likes + 1))
-        #query.execute()
+        #if request.method == 'POST':
+        #    my_question.num_likes += 1
+
+        #my_question.num_likes += 1
+        if request.method == 'POST':
+            my_question.num_likes += 1
 
         # update question in database
         db.session.add(my_question)
@@ -71,9 +71,21 @@ def get_question(question_id):
         # create a reply form object
         form = ReplyForm()
 
-        return render_template('question.html', question=my_question, form=form)
+        return render_template('question.html', question=my_question, form=form, num_likes=my_question.num_likes)
     else:
         return redirect(url_for('login'))
+
+
+def like_button(question_id):
+    if session.get('user'):
+        my_question = db.session.query(Question).filter_by(question_id=question_id).one()
+        if request.method == 'GET':
+            my_question.num_likes += 1
+
+            db.session.add(my_question)
+            db.session.commit()
+            return render_template('question.html', question=my_question, num_likes=my_question.num_likes)
+        return redirect(url_for('like_button'))
 
 
 @app.route('/home/new', methods=['GET', 'POST'])
@@ -238,6 +250,16 @@ def new_reply(question_id):
 
     else:
         return redirect(url_for('login'))
+
+
+@app.route('/home/<question_id>/like/<action>')
+def like_action(question_id, action):
+    post = db.session.query(Question).filter_by(question_id=question_id).first_or_404()
+    curr_user = db.session.query(User).filter_by(user_id=session['user_id']).one()
+    if action == 'like':
+        curr_user.like_post(post)
+        db.session.commit()
+    return redirect(url_for('get_question', question_id=question_id))
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)

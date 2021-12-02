@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<br lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,10 +37,21 @@
         <p>Question: {{ question.text }}</p>
     </div>
 
-     <div class="voting_bar">
-        <a href="/home/{{ question.question_id }}"><img src="/static/img/upvote.png"></a>
+     <div class="upvote">
+        <form action="{{ url_for('get_question', question_id = question.question_id) }}" method="POST">
+        <button type="submit", name="likes", value="{{ question.question_id }}", class="btn btn-primary btn-sm">Like</button>
         <p>{{ question.num_likes }}</p>
+        </form>
       </div>
+
+     {% for question in questions %}
+        {% if not current_user.has_liked_post(question) %}
+            <a href="{{ url_for('like_action', question_id=question.question_id, action='like') }}">Like</a>
+        {% else %}
+            <button type="submit", name="likes", value="{{ question.question_id }}", class="btn btn-primary btn-sm" disabled>Like</button>
+        {% endif %}
+     {% endfor %}
+
 
     {% if question.replies %}
         {% if question.replies|length > 0 %}
