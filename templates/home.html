@@ -21,7 +21,9 @@
                 </nav>
         {% endif %}
         <h2 id="welcome">Welcome {{user}} to the ROCS Q&A App!</h2>
-        <a href="{{ url_for('new_post') }}">Make a Post</a>
+        <a href="{{ url_for('new_post') }}" id="newpost">Make a Post</a>
+        <br>
+        <br>
         <table>
             <tr>
                 <th>Title</th>

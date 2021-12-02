@@ -34,7 +34,7 @@
     <div id="postInfo">
         <h3><b>Title: {{ question.title }}</b></h3>
         <h4> Date Posted: {{ question.posted_date }}</h4>
-        <p>Question: {{ question.text }}</p>
+        <p><b>Question: {{ question.text }}</b></p>
     </div>
 
     {% if question.replies %}
@@ -50,9 +50,11 @@
         <form action="{{ url_for('new_reply', question_id=question.question_id) }}" method="post">
             <div class="formwrapper">
                 <h2 class="title">Add a comment</h2>
+                <br>
                     <div class="form-field">
                         {{ form.reply.label }} <br/> {{ form.reply }}
                      </div>
+                <br>
                 {{ form.submit }}
             </div>
         </form>
