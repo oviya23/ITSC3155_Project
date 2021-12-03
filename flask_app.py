@@ -94,13 +94,17 @@ def new_post():
         if request.method == 'POST':
             title = request.form['title']
             text = request.form['postText']
+            if request.form['pinned'] == 'on':
+                pinned = True
+            else:
+                pinned = False
 
             from datetime import date
             today = date.today()
 
             today = today.strftime("%m-%d-%Y")
 
-            new_record = Question(title, text, today, session['user_id'], 0, 0)
+            new_record = Question(title, text, today, session['user_id'], 0, 0, pinned)
             db.session.add(new_record)
             db.session.commit()
 

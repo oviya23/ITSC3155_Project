@@ -38,6 +38,17 @@
                     {% endif %}
                 </textarea>
             </p>
+
+{#            {% if question %}#}
+{#            {%  if question.pinned %}#}
+{#                <input type="checkbox" id = "pin" name="pin" value="Pin" checked>#}
+{#                <label for="pin">Pin Question</label>#}
+{#            {% else %}#}
+                <input type="checkbox" id = "pin" name="pinned" value="Pin">
+                <label for="pin">Pin Question</label>
+{#            {% endif %}#}
+{#            {% endif %}#}
+
             <p>
                 {% if question %}
                     <input type="submit" value="Edit Post"/>

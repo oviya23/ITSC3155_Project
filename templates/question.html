@@ -42,15 +42,15 @@
         <button type="submit", name="likes", value="{{ question.question_id }}", class="btn btn-primary btn-sm">Like</button>
         <p>{{ question.num_likes }}</p>
         </form>
-      </div>
 
      {% for question in questions %}
-        {% if not current_user.has_liked_post(question) %}
+        {% if not user.has_liked_post(question) %}
             <a href="{{ url_for('like_action', question_id=question.question_id, action='like') }}">Like</a>
         {% else %}
             <button type="submit", name="likes", value="{{ question.question_id }}", class="btn btn-primary btn-sm" disabled>Like</button>
         {% endif %}
      {% endfor %}
+    </div>
 
 
     {% if question.replies %}
