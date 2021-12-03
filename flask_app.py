@@ -94,10 +94,8 @@ def new_post():
         if request.method == 'POST':
             title = request.form['title']
             text = request.form['postText']
-            if request.form['pinned'] == 'on':
-                pinned = True
-            else:
-                pinned = False
+
+            pinned = 'pinned' in request.form
 
             from datetime import date
             today = date.today()
