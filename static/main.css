@@ -117,3 +117,17 @@ table {
     background: #e1b28e;
     margin-left: 550px;
 }
+
+button {
+    display: block;
+    margin-left: 200px;
+    background: #e1b28e;
+}
+
+#likes {
+    color: #e1b28e;
+    background: #a64253;
+    margin-left: 200px;
+    border: solid;
+    border-color: #000000;
+}
