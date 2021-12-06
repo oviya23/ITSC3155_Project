@@ -37,10 +37,13 @@
         <p><b>Question: {{ question.text }}</b></p>
     </div>
 
+    <br>
+
      <div class="upvote">
         <form action="{{ url_for('get_question', question_id = question.question_id) }}" method="POST">
         <button type="submit", name="likes", value="{{ question.question_id }}", class="btn btn-primary btn-sm">Like</button>
-        <p>{{ question.num_likes }}</p>
+        <br>
+        <p1 id="likes">Number of Like(s): {{ question.num_likes }}</p1>
         </form>
       </div>
 
