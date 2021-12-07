@@ -127,11 +127,15 @@ def edit_post(question_id):
 
             # get post text
             text = request.form['postText']
+
+            pinned = 'pinned' in request.form
+
             question = db.session.query(Question).filter_by(question_id=question_id).one()
 
             # update question title and text
             question.title = title
             question.text = text
+            question.pinned = pinned
 
             # update question in database
             db.session.add(question)
