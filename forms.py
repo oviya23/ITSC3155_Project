@@ -56,7 +56,7 @@ class ReplyForm(FlaskForm):
     class Meta:
         csrf = False
 
-    reply = TextAreaField('Comment',validators=[Length(min=1)])
+    reply = TextAreaField('',validators=[Length(min=1)])
 
     submit = SubmitField('Reply')
 
