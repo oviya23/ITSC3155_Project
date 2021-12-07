@@ -2,6 +2,7 @@ form {
   background: #e1b28e;
   width: 100%;
   text-align: center;
+  font-family: 'Poppins', sans-serif;
 }
 
 .form-field {
@@ -37,8 +38,6 @@ label {
 input, textarea{
   padding: 10px 13px;
   margin-bottom: 15px;
-  border-radius: 2px;
-  border: 1px solid #d4d9e3;
   font-weight: 200;
   color: #4d5060;
   font-family: 'Poppins', sans-serif;
@@ -53,16 +52,18 @@ input[type="text"]::placeholder {
 input[type="text"]:hover,
 input[type="password"]:hover,
 textarea:hover,
-select:hover {
-  border-color: green;
-  background: lightyellow;
+select:hover
+ {
+  border: 5px solid #a64253;
+  background: white;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus,
-textarea:focus {
+textarea:focus
+{
   background: white;
-  border-color: green;
+  border-color: #a64253;
   box-shadow: unset;
 }
 
@@ -73,14 +74,14 @@ input[type="submit"] {
   border-radius: 2px;
   margin-top: 15px;
   font-weight: 400;
-  border: 1px solid green;
+  border: 1px solid black;
   transition: all .3s ease-out;
 }
 
 input[type="submit"]:hover {
   cursor: pointer;
   background: white;
-  color: green;
+  color: #a64253;
 }
 
 .success-wrapper {
